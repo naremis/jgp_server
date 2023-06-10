@@ -2,6 +2,7 @@ const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
 const { websiteService } = require('../services');
 const pick = require('../utils/pick');
+const { maskURL } = require('../utils/urls');
 
 const createWebsite = catchAsync(async (req, res) => {
   const websites = await websiteService.createWebsite(req.body);
@@ -19,7 +20,7 @@ const getPublicWebsites = catchAsync(async (req, res) => {
   const filter = pick(req.query, ['domainAuthority', 'domainRating', 'domainType', 'url', 'pricing']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const result = await websiteService.queryWebsites(filter, options);
-  const publicResults = result.maskURL();
+  const publicResults = maskURL(result.results);
   res.send(publicResults);
 });
 

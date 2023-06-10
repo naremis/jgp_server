@@ -15,8 +15,8 @@ const createWebsite = async (websiteBody) => Website.create(websiteBody);
  * @returns {Promise<[Websites]>}
  */
 const queryWebsites = async (filter, options) => {
-  const users = await Website.paginate(filter, options);
-  return users;
+  const websites = await Website.paginate(filter, options);
+  return websites;
 };
 
 /**

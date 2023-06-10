@@ -4,7 +4,6 @@ const createWebsite = {
   body: Joi.array()
     .items(
       Joi.object({
-        idLocal: Joi.string().required(),
         url: Joi.string().required(),
         domainType: Joi.string().required(),
         domainAuthority: Joi.number().required(),
@@ -27,19 +26,19 @@ const createWebsite = {
             }),
           )
           .unique((a, b) => a.category === b.category),
-      }),
+      }).unknown(false),
     )
     .min(1), // Ensure there is at least one item in the array
 };
 
 const updateWebsite = {
   body: Joi.object().keys({
-    domainType: Joi.string().required(),
-    domainAuthority: Joi.number().required(),
-    domainRating: Joi.number().required(),
-    traffic: Joi.number().required(),
-    spam: Joi.number().required(),
-    websiteIndexDate: Joi.date().required(),
+    domainType: Joi.string(),
+    domainAuthority: Joi.number(),
+    domainRating: Joi.number(),
+    traffic: Joi.number(),
+    spam: Joi.number(),
+    websiteIndexDate: Joi.date(),
     exampleCases: Joi.array().items(Joi.string()),
     linksAllowed: Joi.number(),
     pricing: Joi.array().items(Joi.object().keys({

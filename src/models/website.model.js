@@ -1,17 +1,10 @@
 /* eslint-disable func-names */
 
 const mongoose = require('mongoose');
-const { URL } = require('url');
 const { toJSON, paginate, dynamicCondition } = require('./plugins');
 
 const websiteSchema = mongoose.Schema(
   {
-    idLocal: {
-      type: String,
-      required: true,
-      trim: true,
-      unique: true,
-    },
     url: {
       type: String,
       required: true,
@@ -82,31 +75,6 @@ websiteSchema.plugin(dynamicCondition);
 
 // method to get me the static data
 
-websiteSchema.statics.maskURL = function (response) {
-  const isMultiple = Array.isArray(response);
-
-  const maskSingle = (website) => {
-    const urlObj = new URL(website.url);
-    const { hostname } = urlObj;
-
-    let maskedURL = '';
-    if (hostname.length < 6) {
-      maskedURL = `${hostname.slice(0, -2)}**${urlObj.pathname}${urlObj.search}${urlObj.hash}`;
-    } else {
-      maskedURL = `${hostname.slice(0, -3)}***${urlObj.pathname}${urlObj.search}${urlObj.hash}`;
-    }
-
-    return {
-      ...website.toJSON(),
-      url: maskedURL,
-    };
-  };
-
-  if (isMultiple) {
-    return response.map((website) => maskSingle(website));
-  }
-  return maskSingle(response);
-};
 const Website = mongoose.model('Website', websiteSchema);
 
 module.exports = Website;

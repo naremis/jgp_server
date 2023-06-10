@@ -1,15 +1,24 @@
 const { URL } = require('url');
 
-exports.maskWebsiteURL = (url) => {
-  const urlObj = new URL(url);
-  const { hostname } = urlObj;
+exports.maskURL = (_website) => {
+  const isMultiple = Array.isArray(_website);
 
-  let maskedURL = '';
-  if (hostname.length < 6) {
-    maskedURL = `${hostname.slice(0, -2)}**${urlObj.pathname}${urlObj.search}${urlObj.hash}`;
-  } else {
-    maskedURL = `${hostname.slice(0, -3)}***${urlObj.pathname}${urlObj.search}${urlObj.hash}`;
+  const maskSingle = (website) => {
+    const urlObj = new URL(website.url);
+    const { hostname } = urlObj;
+    const tld = hostname.split('.').pop();
+    let maskedURL = '';
+    maskedURL = `${urlObj.origin.replace(urlObj.host, urlObj.host.replace(urlObj.host.slice(0, urlObj.host.split('.')[0].length - 2), '*****'))}`;
+
+    return {
+      ...website.toJSON(),
+      url: maskedURL,
+      tld,
+    };
+  };
+
+  if (isMultiple) {
+    return _website.map((website) => maskSingle(website));
   }
-
-  return maskedURL;
+  return maskSingle(_website);
 };
