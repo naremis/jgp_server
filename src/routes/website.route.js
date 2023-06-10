@@ -15,6 +15,7 @@ router
 router
   .route('/public')
   .get(validate(websiteValidation.getWebsites), websiteController.getPublicWebsites);
+
 router.route('/:websiteId')
   .put(auth('verified'), validate(websiteValidation.updateWebsite), websiteController.updateWebsite)
   .delete(auth('verified'), websiteController.deleteWebsite);

@@ -81,6 +81,17 @@ const resetPassword = async (resetPasswordToken, newPassword) => {
   }
 };
 
+const changePassword = async (user, oldPassword, newPassword) => {
+  try {
+    if (!user || !(await user.isPasswordMatch(oldPassword))) {
+      throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect password');
+    }
+    await userService.updateUserById(user.id, { password: newPassword });
+  } catch (error) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Password reset failed');
+  }
+};
+
 /**
  * Verify email
  * @param {string} verifyEmailToken
@@ -108,5 +119,6 @@ module.exports = {
   logout,
   refreshAuth,
   resetPassword,
+  changePassword,
   verifyEmail,
 };
