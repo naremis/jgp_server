@@ -4,6 +4,7 @@ const authRoute = require('./auth.route');
 const userRoute = require('./user.route');
 const websiteRoute = require('./website.route');
 const orderRoute = require('./order.route');
+const wishlistRoute = require('./wishlist.route');
 
 const router = express.Router();
 
@@ -24,6 +25,10 @@ const defaultRoutes = [
     path: '/order',
     route: orderRoute,
   },
+  {
+    path: '/wishlist',
+    route: wishlistRoute,
+  }
 ];
 
 defaultRoutes.forEach((route) => {

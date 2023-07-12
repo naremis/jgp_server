@@ -5,36 +5,32 @@ const { toJSON, paginate } = require('./plugins');
 
 const wishlistSchema = mongoose.Schema(
   {
-    website: {
-      type: mongoose.Schema.Types.ObjectId, ref: 'Website', required: true,
-    },
-    category: {
-      type: String,
+    websites: {
+      type: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Website',
+          required: true,
+        },
+      ],
+      set(websites) {
+        return Array.from(new Set(websites)); // Remove duplicates using a Set
+      },
     },
     user: {
-      type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+      index: true,
     },
   },
   {
     timestamps: true,
   },
 );
-
 // add plugin that converts mongoose object to json
 wishlistSchema.plugin(toJSON);
 wishlistSchema.plugin(paginate);
-
-/**
- * Check if wishlist already has that website
- * @param {id} id - id of the website
- * @param {category} Category - category` of the website
- * @returns {Promise<boolean>}
- */
-
-wishlistSchema.statics.doesWebsiteExist = async function (name) {
-  const order = await this.findOne({ name });
-  return !!order;
-};
 
 /**
  * @typedef WishList
