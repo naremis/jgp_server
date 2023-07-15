@@ -1,53 +1,87 @@
-/* eslint-disable func-names */
-
 const mongoose = require('mongoose');
-const { toJSON, paginate } = require('./plugins');
 
-const orderSchema = mongoose.Schema(
-  {
-    name: {
-      type: String,
-      required: true,
-      unique: true,
-      trim: true,
-    },
-    description: {
-      type: String,
-    },
-    addedBy: {
-      type: mongoose.Schema.Types.ObjectId, ref: 'User',
-    },
-    updatedBy: {
-      type: mongoose.Schema.Types.ObjectId, ref: 'User',
-    },
-    _deleted: {
-      type: Boolean,
-    },
+const orderSchema = mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+    index: true,
   },
-  {
-    timestamps: true,
+  status: {
+    type: String,
+    enum: ['IN_CART', 'PENDING', 'IN_PROCESS', 'COMPLETED', 'REJECTED'],
+    default: 'IN_CART',
   },
-);
+  amount: {
+    type: Number,
+    required: true,
+  },
+  created: {
+    type: Date,
+    default: Date.now,
+  },
+  due: {
+    type: Date,
+    required: true,
+  },
+  items: [
+    {
+      key: {
+        type: String,
+        required: true,
+      },
+      website: {
+        type: String,
+        required: true,
+      },
+      status: {
+        type: String,
+        enum: ['PENDING', 'IN_WRITING', 'SUBMITTED', 'PUBLISHED'],
+        default: 'PENDING',
+      },
+      published_url: {
+        type: String,
+      },
+      links: [
+        {
+          anchor_text: {
+            type: String,
+            required: true,
+          },
+          target_url: {
+            type: String,
+            required: true,
+          },
+        },
+      ],
+      category: {
+        type: String,
+        required: true,
+      },
+      price: {
+        type: Number,
+        required: true,
+      },
+      content_type: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
+  history: [
+    {
+      time: {
+        type: Date,
+        default: Date.now,
+      },
+      event: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
+});
 
-// add plugin that converts mongoose object to json
-orderSchema.plugin(toJSON);
-orderSchema.plugin(paginate);
-
-/**
- * Check if order already exist
- * @param {string} name -name of the order
- * @param {ObjectId} [excludeUserId] - The id of the user to be excluded
- * @returns {Promise<boolean>}
- */
-
-orderSchema.statics.doesOrderExist = async function (name) {
-  const order = await this.findOne({ name });
-  return !!order;
-};
-
-/**
- * @typedef Order
- */
 const Order = mongoose.model('Order', orderSchema);
 
 module.exports = Order;

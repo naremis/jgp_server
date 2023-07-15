@@ -1,28 +1,28 @@
 const Joi = require('joi');
 
 const createOrder = {
-  body: Joi.object().keys({
-    name: Joi.string().required(),
-    description: Joi.string(),
+  body:
+  Joi.object({
+    websiteId: Joi.string().required(),
+    url: Joi.string().required(),
+    articles: Joi.array().items(
+      Joi.object({
+        id: Joi.string().required(),
+        websiteId: Joi.string().required(),
+        links: Joi.array().items(
+          Joi.object({
+            id: Joi.string().required(),
+            key: Joi.string().required(),
+            link_no: Joi.number().integer().required(),
+            target_url: Joi.string().required(),
+            anchor_text: Joi.string().required(),
+          }),
+        ),
+        category: Joi.string().required(),
+        price: Joi.number().required(),
+        content_type: Joi.string().required(),
+      }),
+    ).required(),
   }),
 };
-const updateOrder = {
-  body: Joi.object().keys({
-    name: Joi.string(),
-    description: Joi.string(),
-  }),
-};
-
-const getOrder = {
-  query: Joi.object().keys({
-    name: Joi.string(),
-    sortBy: Joi.string(),
-    limit: Joi.number().integer(),
-    page: Joi.number().integer(),
-  }),
-};
-module.exports = {
-  createOrder,
-  updateOrder,
-  getOrder,
-};
+module.exports = { createOrder };
