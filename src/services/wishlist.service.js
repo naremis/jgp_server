@@ -9,7 +9,7 @@ const ApiError = require('../utils/ApiError');
  * @returns {Promise<Wishlist>}
  */
 const addToWishlist = async (user, websites) => {
-  const wishlist = Wishlist.find({ user: user.id });
+  const wishlist = await Wishlist.findOne({ user: user.id });
   if (wishlist) {
     wishlist.websites = wishlist.websites.concat(websites);
     await wishlist.save();
@@ -25,9 +25,11 @@ const addToWishlist = async (user, websites) => {
  * @returns {Promise<Wishlist>}
  */
 const removeFromWishlist = async (user, websites) => {
-  const wishlist = Wishlist.find({ user: user.id });
+  const wishlist = await Wishlist.findOne({ user: user.id });
   if (wishlist) {
-    wishlist.websites = wishlist.websites.filter((website) => !websites.includes(website));
+    wishlist.websites = wishlist.websites.filter(
+      (website) => !websites.includes(website.toString()),
+    );
     await wishlist.save();
     return wishlist;
   }
@@ -42,7 +44,7 @@ const removeFromWishlist = async (user, websites) => {
  * @returns {Promise<[Wishlist]>}
  */
 const getWishlist = async (user) => {
-  const wishlist = await Wishlist.find({ user: user.id });
+  const wishlist = await Wishlist.findOne({ user: user.id }).populate('websites');
   if (!wishlist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Wishlist not found');
   }

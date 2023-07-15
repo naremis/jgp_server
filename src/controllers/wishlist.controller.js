@@ -3,12 +3,12 @@ const catchAsync = require('../utils/catchAsync');
 const { wishlistService } = require('../services');
 
 const addToWishlist = catchAsync(async (req, res) => {
-  const wishlist = await wishlistService.addToWishlist(req.user, req.body.website);
+  const wishlist = await wishlistService.addToWishlist(req.user, req.body.websites);
   res.status(httpStatus.CREATED).send({ wishlist });
 });
 
 const removeFromWishlist = catchAsync(async (req, res) => {
-  const wishlist = await wishlistService.removeFromWishlist(req.user, req.body.website);
+  const wishlist = await wishlistService.removeFromWishlist(req.user, req.body.websites);
   res.status(httpStatus.OK).send({ wishlist });
 });
 

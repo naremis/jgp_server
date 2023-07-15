@@ -33,8 +33,8 @@ wishlistSchema.plugin(toJSON);
 wishlistSchema.plugin(paginate);
 
 /**
- * @typedef WishList
+ * @typedef Wishlist
  */
-const WishList = mongoose.model('WishList', wishlistSchema);
+const Wishlist = mongoose.model('WishList', wishlistSchema);
 
-module.exports = WishList;
+module.exports = Wishlist;
