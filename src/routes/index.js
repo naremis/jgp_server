@@ -1,10 +1,10 @@
 const express = require('express');
 
-const authRoute = require('./auth.route');
-const userRoute = require('./user.route');
-const websiteRoute = require('./website.route');
-const orderRoute = require('./order.route');
-const wishlistRoute = require('./wishlist.route');
+const authRoute = require('./auth.routes');
+const userRoute = require('./user.routes');
+const websiteRoute = require('./website.routes');
+const orderRoute = require('./order.routes');
+const wishlistRoute = require('./wishlist.routes');
 
 const router = express.Router();
 
@@ -28,7 +28,7 @@ const defaultRoutes = [
   {
     path: '/wishlist',
     route: wishlistRoute,
-  }
+  },
 ];
 
 defaultRoutes.forEach((route) => {

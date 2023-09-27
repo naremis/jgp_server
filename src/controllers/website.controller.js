@@ -10,14 +10,26 @@ const createWebsite = catchAsync(async (req, res) => {
 });
 
 const getWebsites = catchAsync(async (req, res) => {
-  const filter = pick(req.query, ['domainAuthority', 'domainRating', 'domainType', 'url', 'pricing']);
+  const filter = pick(req.query, [
+    'domainAuthority',
+    'domainRating',
+    'domainType',
+    'url',
+    'categories',
+  ]);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const result = await websiteService.queryWebsites(filter, options);
   res.send(result);
 });
 
 const getPublicWebsites = catchAsync(async (req, res) => {
-  const filter = pick(req.query, ['domainAuthority', 'domainRating', 'domainType', 'url', 'pricing']);
+  const filter = pick(req.query, [
+    'domainAuthority',
+    'domainRating',
+    'domainType',
+    'url',
+    'categories',
+  ]);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const result = await websiteService.queryWebsites(filter, options);
   const publicResults = maskURL(result.results);

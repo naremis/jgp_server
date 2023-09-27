@@ -37,6 +37,11 @@ const userSchema = mongoose.Schema(
       },
       private: true, // used by the toJSON plugin
     },
+    role: {
+      type: Boolean,
+      default: 'CUSTOMER',
+      enum: ['CUSTOMER', 'ADMIN', 'SUPER_ADMIN'],
+    },
     isEmailVerified: {
       type: Boolean,
       default: false,

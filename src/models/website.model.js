@@ -24,6 +24,9 @@ const websiteSchema = mongoose.Schema(
       type: Number,
       required: true,
     },
+    extension: {
+      type: String,
+    },
     traffic: {
       type: Number,
       required: true,
@@ -47,7 +50,7 @@ const websiteSchema = mongoose.Schema(
       code: String,
       name: String,
     },
-    pricing: [{
+    categories: [{
       category: {
         type: String,
         enum: ['GENERAL', 'CRYPTO', 'CBD', 'NON_ENGLISH', 'MEDICINE', 'LINK_INSERTION'],
