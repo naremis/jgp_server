@@ -1,7 +1,7 @@
 {
   "name": "jgp_server",
   "version": "0.0.1",
-  "description": "Backend of justguestposting.com",
+  "description": "Backend of guestpostingmarket.com",
   "main": "index.js",
   "scripts": {
     "start": "pm2 start ecosystem.config.json --no-daemon",
